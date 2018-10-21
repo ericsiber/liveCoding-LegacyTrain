@@ -28,7 +28,7 @@ namespace TrainTrain
                 client.DefaultRequestHeaders.Accept.Add(value);
 
                 // HTTP GET
-                var response = await client.GetAsync($"api/data_for_train/{trainId}");
+                var response = await client.GetAsync($"data_for_train/{trainId}");
                 response.EnsureSuccessStatusCode();
                 jsonTrainTopology = await response.Content.ReadAsStringAsync();
             }

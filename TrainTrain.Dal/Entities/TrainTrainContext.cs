@@ -5,6 +5,7 @@ namespace TrainTrain.Dal.Entities
     public class TrainTrainContext : DbContext
     {
         public TrainTrainContext()
+            : base("Server=(localdb)\\MSSQLLocalDB")
         {
             Configuration.LazyLoadingEnabled = false;
         }
