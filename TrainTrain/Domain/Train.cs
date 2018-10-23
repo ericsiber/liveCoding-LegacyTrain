@@ -44,7 +44,7 @@ namespace TrainTrain.Domain
         {
             return _coaches
                 .Select(coach => coach.TryReserve(seatsRequestedCount))
-                .FirstOrDefault(reservation => reservation.Success()) ?? new FailReservation();
+                .First(reservation => reservation.Success());
         }
 
         private int GetNbSeats()
