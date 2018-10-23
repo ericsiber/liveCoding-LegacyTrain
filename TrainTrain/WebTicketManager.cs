@@ -34,10 +34,10 @@ namespace TrainTrain
                 return InvalidReservation(trainId);
             }
 
+            var bookingReference = await _bookingReferenceService.GetBookingReference();
+
             var numberOfReservation = 0;
             var availableSeats = train.FindAvailableSeats(seatsRequestedCount);
-
-            var bookingReference = await _bookingReferenceService.GetBookingReference();
 
             foreach (var availableSeat in availableSeats)
             {

@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BookingReferenceService.cs" />
+    <Compile Include="DomainEvent.cs" />
     <Compile Include="IBookingReferenceService.cs" />
     <Compile Include="ITrainDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

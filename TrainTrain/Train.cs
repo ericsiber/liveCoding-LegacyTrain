@@ -51,6 +51,25 @@ namespace TrainTrain
         {
             return ReservedSeats + seatsRequestedCount <= GetAvailableSeatsForReservation();
         }
+
+        public DomainEvent TryToBook(int seatsRequestedCount, string bookingReference, string trainId)
+        {
+            var availableSeats = FindAvailableSeats(seatsRequestedCount);
+            var numberOfReservation = 0;
+
+            foreach (var availableSeat in availableSeats)
+            {
+                availableSeat.BookingRef = bookingReference;
+                
+                numberOfReservation++;
+            }
+
+            if (numberOfReservation == seatsRequestedCount)
+            {
+                return new SeatsBooked(trainId, availableSeats,bookingReference);
+            }
+            return new SeatsBookedFailedBecauseNotEnoughAvailableSeats(trainId);
+        }
     }
 
     public class TrainJsonPoco
