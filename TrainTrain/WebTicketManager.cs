@@ -36,20 +36,22 @@ namespace TrainTrain
             }
 
             var bookingReference = await _bookingReferenceService.GetBookingReference();
+            var bookingEvent = train.TryToBook(seatsRequestedCount, bookingReference);
+            return await HandleBookingEvents(bookingEvent);
+        }
 
-            var result = train.TryToBook(seatsRequestedCount, bookingReference);
-            
-            if (result is SeatsBookedFailedBecauseNotEnoughAvailableSeats)
+        private async Task<string> HandleBookingEvents(DomainEvent bookingEvent)
+        {
+            if (bookingEvent is SeatsBookedFailedBecauseNotEnoughAvailableSeats seatsBookedFailed)
             {
-                return InvalidReservation(trainId);
+                return InvalidReservation(seatsBookedFailed.TrainId);
             }
 
-            var reservation = (SeatsBooked)result;
-            await _trainDataService.Reserve(trainId, bookingReference, reservation.SeatIds.ToList());
-
-            return ValidReservation(trainId, bookingReference, reservation.SeatIds.ToList());
+            var seatsBooked = (SeatsBooked)bookingEvent;
+            await _trainDataService.Reserve(seatsBooked.TrainId, seatsBooked.BookingReference, seatsBooked.SeatIds.ToList());
+            return ValidReservation(seatsBooked.TrainId, seatsBooked.BookingReference, seatsBooked.SeatIds.ToList());
         }
-      
+
 
         private string ValidReservation(string trainId, string bookingReference, List<Seat> availableSeats)
         {

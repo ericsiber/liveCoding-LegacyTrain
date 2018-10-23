@@ -30,7 +30,7 @@ namespace TrainTrain
             return (int)Math.Floor(ThresholdManager.GetReservationMaxPercent() * GetNbSeats());
         }
 
-        public List<Seat> FindAvailableSeats(int seatsRequestedCount)
+        private List<Seat> FindAvailableSeats(int seatsRequestedCount)
         {
             var availableSeats = new List<Seat>();
             var numberUnreservedSeats = 0;
