@@ -8,12 +8,16 @@ namespace TrainTrain.Domain
     {
         private readonly string _id;
         private readonly IList<Seat> _seats;
+        private readonly List<Coach> _coaches;
         private const decimal CapacityRatioThreshold = 0.7M;
+
 
         public Train(string id, IList<Seat> seats)
         {
             _id = id;
             _seats = seats;
+            _coaches = seats.GroupBy(seat => seat.CoachName).Select(coach => new Coach(coach.Key, coach)).ToList();
+
         }
 
         public DomainEvent TryToReserve(int seatsRequestedCount, string bookingReference)
@@ -41,12 +45,10 @@ namespace TrainTrain.Domain
             var availableSeats = new List<Seat>();
             var numberUnreservedSeats = 0;
 
-            var seatsByCoach = _seats
-                .GroupBy(seat => seat.CoachName)
-                .Where(coach => coach.Count(seat => seat.IsNotReserved()) >= seatsRequestedCount);
+            var seatsByCoach = _coaches.Where(coach => coach.CanReserve(seatsRequestedCount));
             foreach (var seatsOfCoach in seatsByCoach)
             {
-                foreach (var seat in seatsOfCoach.Where(seat => seat.IsNotReserved()))
+                foreach (var seat in seatsOfCoach.GetSeatNotReserved())
                 {
                     numberUnreservedSeats++;
                     if (numberUnreservedSeats <= seatsRequestedCount)

@@ -46,6 +46,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\Coach.cs" />
     <Compile Include="Domain\PortIn\Reserve.cs" />
     <Compile Include="Domain\PortOut\GenerateBookingReference.cs" />
     <Compile Include="Domain\PortOut\GetTrainTopology.cs" />
