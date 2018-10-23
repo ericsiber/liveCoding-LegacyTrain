@@ -33,7 +33,14 @@ namespace TrainTrain
             var train = await _trainDataService.GetTrain(trainId);
             var bookingReference = await _bookingReferenceService.GetBookingReference();
 
-            return train.TryToReserve(seatsRequested, bookingReference);
-        }       
+            var bookingEvent = train.TryToReserve(seatsRequested, bookingReference);
+
+            if (bookingEvent is SeatsReserved seatsBooked)
+            {
+                await _trainDataService.SubmitReservation(seatsBooked.TrainId, seatsBooked.BookingReference, seatsBooked.SeatIds.ToList());
+            }
+
+            return bookingEvent;
+        }
     }
 }

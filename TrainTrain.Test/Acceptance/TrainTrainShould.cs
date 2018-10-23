@@ -57,7 +57,7 @@ namespace TrainTrain.Test.Acceptance
 
         private static ReservationAdapter BuildWebTicketManager(ITrainDataService trainDataService, IBookingReferenceService bookingReferenceService)
         {
-            return new ReservationAdapter(trainDataService, new WebTicketReservation(trainDataService, bookingReferenceService));
+            return new ReservationAdapter(new WebTicketReservation(trainDataService, bookingReferenceService));
         }
 
         [Test]

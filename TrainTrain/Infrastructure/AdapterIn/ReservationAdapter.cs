@@ -9,22 +9,21 @@ namespace TrainTrain.Infrastructure.AdapterIn
 {
     public class ReservationAdapter
     {
-        private readonly ITrainDataService _trainDataService;
+        //private readonly ITrainDataService _trainDataService;
         private readonly Reservation _reservation;
 
-        public ReservationAdapter(ITrainDataService trainDataService, Reservation reservation)
+        public ReservationAdapter(Reservation reservation)
         {
-            _trainDataService = trainDataService;
             _reservation = reservation;
         }
 
         public async Task<string> ReserveLegacy(string trainId, int seatsRequested)
         {
             var bookingEvent = await _reservation.Reserve(trainId, seatsRequested);
-            return await HandleBookingEvents(bookingEvent);
+            return HandleBookingEvents(bookingEvent);
         }
 
-        private async Task<string> HandleBookingEvents(DomainEvent bookingEvent)
+        private string HandleBookingEvents(DomainEvent bookingEvent)
         {
             if (bookingEvent is SeatsReservedFailedBecauseNotEnoughAvailableSeats seatsBookedFailed)
             {
@@ -32,7 +31,6 @@ namespace TrainTrain.Infrastructure.AdapterIn
             }
 
             var seatsBooked = (SeatsReserved)bookingEvent;
-            await _trainDataService.SubmitReservation(seatsBooked.TrainId, seatsBooked.BookingReference, seatsBooked.SeatIds.ToList());
             return ValidReservation(seatsBooked.TrainId, seatsBooked.BookingReference, seatsBooked.SeatIds.ToList());
         }
 
