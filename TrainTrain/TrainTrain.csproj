@@ -51,6 +51,7 @@
     <Compile Include="Domain\PortOut\GenerateBookingReference.cs" />
     <Compile Include="Domain\PortOut\GetTrainTopology.cs" />
     <Compile Include="Domain\PortOut\SubmitReservation.cs" />
+    <Compile Include="Domain\Reservation.cs" />
     <Compile Include="Infrastructure\AdapterIn\ReserveAdapter.cs" />
     <Compile Include="Infrastructure\AdapterOut\GenerateBookingReferenceAdapter.cs" />
     <Compile Include="Infrastructure\AdapterOut\GetTrainTopologyAdapter.cs" />

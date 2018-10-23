@@ -24,14 +24,14 @@ namespace TrainTrain.Domain
             return _seats.Where(seat => seat.IsNotReserved());
         }
 
-        public IEnumerable<Seat> TryReserve(int seatsRequestedCount)
+        public Reservation TryReserve(int seatsRequestedCount)
         {
             if (CanReserve(seatsRequestedCount))
             {
-                return GetSeatNotReserved().Take(seatsRequestedCount);
+                return new SuccessReservation(GetSeatNotReserved().Take(seatsRequestedCount).ToList());
             }
 
-            return null;
+            return new FailReservation();
         }
     }
 }
