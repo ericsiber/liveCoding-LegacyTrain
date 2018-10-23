@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TrainTrain
+namespace TrainTrain.Domain
 {
     public class Train
     {

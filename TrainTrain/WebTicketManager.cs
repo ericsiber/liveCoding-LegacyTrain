@@ -5,6 +5,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using TrainTrain.Domain;
+using TrainTrain.Infrastructure;
 
 namespace TrainTrain
 {
@@ -44,7 +46,7 @@ namespace TrainTrain
             }
 
             var seatsBooked = (SeatsBooked)bookingEvent;
-            await _trainDataService.Reserve(seatsBooked.TrainId, seatsBooked.BookingReference, seatsBooked.SeatIds.ToList());
+            await _trainDataService.SubmitReservation(seatsBooked.TrainId, seatsBooked.BookingReference, seatsBooked.SeatIds.ToList());
             return ValidReservation(seatsBooked.TrainId, seatsBooked.BookingReference, seatsBooked.SeatIds.ToList());
         }
 

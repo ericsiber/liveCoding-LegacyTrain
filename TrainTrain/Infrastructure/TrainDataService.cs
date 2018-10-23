@@ -5,8 +5,9 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using TrainTrain.Domain;
 
-namespace TrainTrain
+namespace TrainTrain.Infrastructure
 {
     public class TrainDataService : ITrainDataService
     {
@@ -35,7 +36,7 @@ namespace TrainTrain
             return new Train(trainId, AdaptTrainTopology(jsonTrainTopology));
         }
 
-        public async Task Reserve(string trainId, string bookingRef, List<Seat> availableSeats)
+        public async Task SubmitReservation(string trainId, string bookingRef, List<Seat> availableSeats)
         {
             using (var client = new HttpClient())
             {

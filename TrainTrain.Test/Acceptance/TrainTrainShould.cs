@@ -2,6 +2,8 @@
 using NFluent;
 using NSubstitute;
 using NUnit.Framework;
+using TrainTrain.Domain;
+using TrainTrain.Infrastructure;
 
 namespace TrainTrain.Test.Acceptance
 {
@@ -81,7 +83,7 @@ namespace TrainTrain.Test.Acceptance
             var bookingReferenceService = BuildBookingReferenceService();
 
             var webTicketManager = new BuildWebTicketManager(trainDataService, bookingReferenceService);
-            var reservation = await webTicketManager.Reserve(TrainId, seatsRequestedCount);
+            var reservation = await webTicketManager.SubmitReservation(TrainId, seatsRequestedCount);
 
             Check.That(reservation).IsEqualTo($"{{\"train_id\": \"{TrainId}\", \"booking_reference\": \"{BookingReference}\", \"seats\": [\"1B\", \"2B\"]}}");
         */

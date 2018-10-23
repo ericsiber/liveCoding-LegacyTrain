@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using TrainTrain.Domain;
 
-namespace TrainTrain
+namespace TrainTrain.Infrastructure
 {
     public interface ITrainDataService
     {
         Task<Train> GetTrain(string trainId);
-        Task Reserve(string trainId, string bookingRef, List<Seat> availableSeats);
+        Task SubmitReservation(string trainId, string bookingRef, List<Seat> availableSeats);
     }
 }
