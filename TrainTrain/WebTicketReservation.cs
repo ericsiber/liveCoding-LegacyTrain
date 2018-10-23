@@ -7,7 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using TrainTrain.Domain;
 using TrainTrain.Domain.PortIn;
+using TrainTrain.Domain.PortOut;
 using TrainTrain.Infrastructure;
+using TrainTrain.Infrastructure.AdapterOut;
 
 namespace TrainTrain
 {
@@ -17,6 +19,7 @@ namespace TrainTrain
         private const string UriTrainDataService = "http://localhost:50680";
         private readonly ITrainDataService _trainDataService;
         private readonly IBookingReferenceService _bookingReferenceService;
+        private readonly SubmitReservation _submitReservation;
 
         public WebTicketReservation():this(new TrainDataService(UriTrainDataService), new BookingReferenceService(UriBookingReferenceService))
         {
@@ -26,6 +29,7 @@ namespace TrainTrain
         {
             _trainDataService = trainDataService;
             _bookingReferenceService = bookingReferenceService;
+            _submitReservation = new SubmitReservationAdapter(_trainDataService);
         }
 
         public async Task<DomainEvent> Execute(string trainId, int seatsRequested)
@@ -37,7 +41,7 @@ namespace TrainTrain
 
             if (bookingEvent is SeatsReserved seatsBooked)
             {
-                await _trainDataService.SubmitReservation(seatsBooked.TrainId, seatsBooked.BookingReference, seatsBooked.SeatIds.ToList());
+                await _submitReservation.Execute(seatsBooked.TrainId, seatsBooked.BookingReference, seatsBooked.SeatIds.ToList());
             }
 
             return bookingEvent;
