@@ -2,27 +2,27 @@
 {
     public class Seat
     {
+        private readonly string _bookingReference;
         private const string NoReservation = "";
 
         public string CoachName { get; }
         public int SeatNumber { get; }
-        public string BookingRef { get; set; }
 
         public Seat(string coachName, int seatNumber) 
             : this(coachName, seatNumber, string.Empty)
         {
         }
 
-        public Seat(string coachName, int seatNumber, string bookingRef)
+        public Seat(string coachName, int seatNumber, string bookingReference)
         {
             CoachName = coachName;
             SeatNumber = seatNumber;
-            BookingRef = bookingRef;
+            _bookingReference = bookingReference;
         }
 
         public bool IsNotReserved()
         {
-            return BookingRef == NoReservation;
+            return _bookingReference == NoReservation;
         }
     }
 }

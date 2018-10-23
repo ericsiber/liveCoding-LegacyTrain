@@ -51,7 +51,8 @@ namespace TrainTrain
 
         private string ValidReservation(string trainId, string bookingReference, List<Seat> availableSeats)
         {
-            return $"{{\"train_id\": \"{trainId}\", \"booking_reference\": \"{bookingReference}\", \"seats\": {dumpSeats(availableSeats)}}}";
+            return $"{{\"train_id\": \"{trainId}\", \"booking_reference\": \"{bookingReference}\"," +
+                    $" \"seats\": {dumpSeats(availableSeats)}}}";
         }
 
         private static string InvalidReservation(string trainId)

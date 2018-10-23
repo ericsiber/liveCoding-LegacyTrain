@@ -23,16 +23,7 @@ namespace TrainTrain
             }
 
             var availableSeats = FindAvailableSeats(seatsRequestedCount);
-            var numberOfReservation = 0;
-
-            foreach (var availableSeat in availableSeats)
-            {
-                availableSeat.BookingRef = bookingReference;
-                
-                numberOfReservation++;
-            }
-
-            if (numberOfReservation == seatsRequestedCount)
+            if (availableSeats.Count == seatsRequestedCount)
             {
                 return new SeatsBooked(_id, availableSeats,bookingReference);
             }
@@ -71,7 +62,7 @@ namespace TrainTrain
 
         private int ReservedSeats
         {
-            get { return _seats.Count(s => !string.IsNullOrEmpty(s.BookingRef)); }
+            get { return _seats.Count(seat => !seat.IsNotReserved()); }
         }
 
         private int GetAvailableSeatsForReservation()
