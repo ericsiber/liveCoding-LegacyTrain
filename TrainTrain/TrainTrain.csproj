@@ -55,7 +55,6 @@
     <Compile Include="SeatJsonPoco.cs" />
     <Compile Include="ThresholdManager.cs" />
     <Compile Include="Train.cs" />
-    <Compile Include="TrainCaching.cs" />
     <Compile Include="TrainDataService.cs" />
     <Compile Include="WebTicketManager.cs" />
   </ItemGroup>
