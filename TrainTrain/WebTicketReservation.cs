@@ -20,6 +20,7 @@ namespace TrainTrain
         private readonly ITrainDataService _trainDataService;
         private readonly IBookingReferenceService _bookingReferenceService;
         private readonly SubmitReservation _submitReservation;
+        private readonly GetTrainTopology _getTrainTopology;
 
         public WebTicketReservation():this(new TrainDataService(UriTrainDataService), new BookingReferenceService(UriBookingReferenceService))
         {
@@ -29,12 +30,13 @@ namespace TrainTrain
         {
             _trainDataService = trainDataService;
             _bookingReferenceService = bookingReferenceService;
-            _submitReservation = new SubmitReservationAdapter(_trainDataService);
+            _submitReservation = new SubmitReservationAdapter(trainDataService);
+            _getTrainTopology = new GetTrainTopologyAdapter(trainDataService);
         }
 
         public async Task<DomainEvent> Execute(string trainId, int seatsRequested)
         {
-            var train = await _trainDataService.GetTrain(trainId);
+            var train = await _getTrainTopology.Execute(trainId);
             var bookingReference = await _bookingReferenceService.GetBookingReference();
 
             var bookingEvent = train.TryToReserve(seatsRequested, bookingReference);
