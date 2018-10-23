@@ -47,9 +47,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\PortIn\Reserve.cs" />
+    <Compile Include="Domain\PortOut\GenerateBookingReference.cs" />
     <Compile Include="Domain\PortOut\GetTrainTopology.cs" />
     <Compile Include="Domain\PortOut\SubmitReservation.cs" />
     <Compile Include="Infrastructure\AdapterIn\ReservationAdapter.cs" />
+    <Compile Include="Infrastructure\AdapterOut\GenerateBookingReferenceAdapter.cs" />
     <Compile Include="Infrastructure\AdapterOut\GetTrainTopologyAdapter.cs" />
     <Compile Include="Infrastructure\AdapterOut\SubmitReservationAdapter.cs" />
     <Compile Include="Infrastructure\BookingReferenceService.cs" />
