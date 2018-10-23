@@ -27,12 +27,7 @@ namespace TrainTrain.Domain
                 return new SeatsReservedFailedBecauseNotEnoughAvailableSeats(_id);
             }
 
-            var reservation = FindAvailableSeats(seatsRequestedCount);
-            if (reservation.Success())
-            {
-                return new SeatsReserved(_id, reservation.Seats(), bookingReference);
-            }
-            return new SeatsReservedFailedBecauseNotEnoughAvailableSeats(_id);
+            return TryToReserveInCoach(seatsRequestedCount, bookingReference);
         }
 
         private bool CanReserve(int seatsRequestedCount)
@@ -40,11 +35,12 @@ namespace TrainTrain.Domain
             return ReservedSeats + seatsRequestedCount <= GetAvailableSeatsForReservation();
         }
 
-        private Reservation FindAvailableSeats(int seatsRequestedCount)
+        private DomainEvent TryToReserveInCoach(int seatsRequestedCount, string bookingReference)
         {
             return _coaches
                 .Select(coach => coach.TryReserve(seatsRequestedCount))
-                .First(reservation => reservation.Success());
+                .First(reservation => reservation.Success())
+                .GetEvent(_id, bookingReference);
         }
 
         private int GetNbSeats()
