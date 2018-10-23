@@ -24,11 +24,6 @@ namespace TrainTrain
             _bookingReferenceService = bookingReferenceService;
         }
 
-        public WebTicketManager(ITrainCaching trainCaching, ITrainDataService trainDataService, IBookingReferenceService bookingReferenceService)
-        {
-            _trainDataService = trainDataService;
-            _bookingReferenceService = bookingReferenceService;
-        }
 
         public async Task<string> Reserve(string trainId, int seatsRequestedCount)
         {

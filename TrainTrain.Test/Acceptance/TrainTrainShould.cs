@@ -54,7 +54,7 @@ namespace TrainTrain.Test.Acceptance
 
         private static WebTicketManager BuildWebTicketManager(ITrainDataService trainDataService, IBookingReferenceService bookingReferenceService)
         {
-            return new WebTicketManager(BuildFakeTrainCaching(),trainDataService, bookingReferenceService);
+            return new WebTicketManager(trainDataService, bookingReferenceService);
         }
 
         [Test]
@@ -100,9 +100,5 @@ namespace TrainTrain.Test.Acceptance
             return trainDataService;
         }
 
-        private static ITrainCaching BuildFakeTrainCaching()
-        {
-            return Substitute.For<ITrainCaching>();
-        }
     }
 }
