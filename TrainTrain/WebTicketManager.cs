@@ -27,42 +27,49 @@ namespace TrainTrain
             _trainCaching.Clear();
         }
 
+        public WebTicketManager(ITrainCaching trainCaching, ITrainDataService trainDataService, IBookingReferenceService bookingReferenceService)
+        {
+            _trainCaching = trainCaching;
+            _trainDataService = trainDataService;
+            _bookingReferenceService = bookingReferenceService;
+        }
+
         public async Task<string> Reserve(string trainId, int seatsRequestedCount)
         {
             List<Seat> availableSeats = new List<Seat>();
-            int count = 0;
-            var result = string.Empty;
-            string bookingRef;
+            var availableSeatsCount = 0;
 
             // get the train
             var trainInst = await _trainDataService.GetTrain(trainId);
 
-            if ((trainInst.ReservedSeats + seatsRequestedCount) <= Math.Floor(ThreasholdManager.GetMaxRes() * trainInst.GetMaxSeat()))
+            var nbSeatsReservedAfterReservation = trainInst.ReservedSeats + seatsRequestedCount;
+            if (nbSeatsReservedAfterReservation <= Math.Floor(ThresholdManager.GetReservationMaxPercent() * trainInst.GetNbSeats()))
             {
-                var numberOfReserv = 0;
+                var numberOfReservation = 0;
+                var i = 0;
                 // find seats to reserve
-                for (int index = 0, i = 0; index < trainInst.Seats.Count; index++)
+                foreach (var seat in trainInst.Seats)
                 {
-                    var each = trainInst.Seats[index];
-                    if (each.BookingRef == "")
+                    if (seat.IsNotReserved())
                     {
                         i++;
                         if (i <= seatsRequestedCount)
                         {
-                            availableSeats.Add(each);
+                            availableSeats.Add(seat);
                         }
                     }
                 }
 
                 foreach (var a in availableSeats)
                 {
-                    count++;
+                    availableSeatsCount++;
                 }
 
                 var reservedSets = 0;
 
 
-                if (count != seatsRequestedCount)
+                string bookingRef;
+                if (availableSeatsCount != seatsRequestedCount)
                 {
                     return string.Format("{{\"train_id\": \"{0}\", \"booking_reference\": \"\", \"seats\": []}}",
                         trainId);
@@ -74,12 +81,12 @@ namespace TrainTrain
                     foreach (var availableSeat in availableSeats)
                     {
                         availableSeat.BookingRef = bookingRef;
-                        numberOfReserv++;
+                        numberOfReservation++;
                         reservedSets++;
                     }
                 }
 
-                if (numberOfReserv == seatsRequestedCount)
+                if (numberOfReservation == seatsRequestedCount)
                 {
                     await _trainCaching.Save(trainId, trainInst, bookingRef);
 
