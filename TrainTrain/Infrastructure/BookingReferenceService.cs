@@ -7,13 +7,8 @@ namespace TrainTrain.Infrastructure
 {
     public class BookingReferenceService : IBookingReferenceService
     {
-        private readonly string _uriBookingReferenceService;
-
-        public BookingReferenceService(string uriBookingReferenceService)
-        {
-            _uriBookingReferenceService = uriBookingReferenceService;
-        }
-
+        private const string UriBookingReferenceService = "http://localhost:51691/";
+        
         public async Task<string> GetBookingReference()
         {
             string bookingRef;
@@ -28,7 +23,7 @@ namespace TrainTrain.Infrastructure
         public async Task<string> GetBookRef(HttpClient client)
         {
             var value = new MediaTypeWithQualityHeaderValue("application/json");
-            client.BaseAddress = new Uri(_uriBookingReferenceService);
+            client.BaseAddress = new Uri(UriBookingReferenceService);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(value);
 

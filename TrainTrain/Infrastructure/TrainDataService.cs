@@ -11,12 +11,7 @@ namespace TrainTrain.Infrastructure
 {
     public class TrainDataService : ITrainDataService
     {
-        private readonly string _uriTrainDataService;
-
-        public TrainDataService(string uriTrainDataService)
-        {
-            _uriTrainDataService = uriTrainDataService;
-        }
+        private const string UriTrainDataService = "http://localhost:50680";
 
         public async Task<Train> GetTrain(string trainId)
         {
@@ -24,7 +19,7 @@ namespace TrainTrain.Infrastructure
             using (var client = new HttpClient())
             {
                 var value = new MediaTypeWithQualityHeaderValue("application/json");
-                client.BaseAddress = new Uri(_uriTrainDataService);
+                client.BaseAddress = new Uri(UriTrainDataService);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(value);
 
@@ -41,7 +36,7 @@ namespace TrainTrain.Infrastructure
             using (var client = new HttpClient())
             {
                 var value = new MediaTypeWithQualityHeaderValue("application/json");
-                client.BaseAddress = new Uri(_uriTrainDataService);
+                client.BaseAddress = new Uri(UriTrainDataService);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(value);
 

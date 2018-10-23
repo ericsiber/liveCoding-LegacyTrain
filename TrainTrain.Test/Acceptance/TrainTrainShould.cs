@@ -5,6 +5,7 @@ using NUnit.Framework;
 using TrainTrain.Domain;
 using TrainTrain.Infrastructure;
 using TrainTrain.Infrastructure.AdapterIn;
+using TrainTrain.Infrastructure.AdapterOut;
 
 namespace TrainTrain.Test.Acceptance
 {
@@ -57,7 +58,7 @@ namespace TrainTrain.Test.Acceptance
 
         private static ReservationAdapter BuildWebTicketManager(ITrainDataService trainDataService, IBookingReferenceService bookingReferenceService)
         {
-            return new ReservationAdapter(new WebTicketReservation(trainDataService, bookingReferenceService));
+            return new ReservationAdapter(new WebTicketReservation(new SubmitReservationAdapter(trainDataService), new GetTrainTopologyAdapter(trainDataService), new GenerateBookingReferenceAdapter(bookingReferenceService)));
         }
 
         [Test]

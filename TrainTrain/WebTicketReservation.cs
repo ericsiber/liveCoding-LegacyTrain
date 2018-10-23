@@ -10,21 +10,16 @@ namespace TrainTrain
 {
     public class WebTicketReservation : Reserve
     {
-        private const string UriBookingReferenceService = "http://localhost:51691/";
-        private const string UriTrainDataService = "http://localhost:50680";
+       
         private readonly SubmitReservation _submitReservation;
         private readonly GetTrainTopology _getTrainTopology;
         private readonly GenerateBookingReference _generateBookingReference;
 
-        public WebTicketReservation():this(new TrainDataService(UriTrainDataService), new BookingReferenceService(UriBookingReferenceService))
+        public WebTicketReservation(SubmitReservation submitReservation, GetTrainTopology getTrainTopology, GenerateBookingReference generateBookingReference)
         {
-        }
-
-        public WebTicketReservation(ITrainDataService trainDataService, IBookingReferenceService bookingReferenceService)
-        {
-            _submitReservation = new SubmitReservationAdapter(trainDataService);
-            _getTrainTopology = new GetTrainTopologyAdapter(trainDataService);
-            _generateBookingReference = new GenerateBookingReferenceAdapter(bookingReferenceService);
+            _submitReservation = submitReservation;
+            _getTrainTopology = getTrainTopology;
+            _generateBookingReference = generateBookingReference;
         }
 
         public async Task<DomainEvent> Execute(string trainId, int seatsRequested)
