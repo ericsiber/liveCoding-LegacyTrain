@@ -8,19 +8,19 @@ namespace TrainTrain
     {
         public Train(List<Seat> seats)
         {
-            this.Seats = seats;
+            Seats = seats;
         }
 
         private int GetNbSeats()
         {
-            return this.Seats.Count;
+            return Seats.Count;
         }
 
         private int ReservedSeats
         {
-            get { return Seats.Count(s => !String.IsNullOrEmpty(s.BookingRef)); }
+            get { return Seats.Count(s => !string.IsNullOrEmpty(s.BookingRef)); }
         }
-        public List<Seat> Seats { get; set; }
+        public List<Seat> Seats { get; private set; }
 
         private int GetAvailableSeatsForReservation()
         {
@@ -69,16 +69,6 @@ namespace TrainTrain
                 return new SeatsBooked(trainId, availableSeats,bookingReference);
             }
             return new SeatsBookedFailedBecauseNotEnoughAvailableSeats(trainId);
-        }
-    }
-
-    public class TrainJsonPoco
-    {
-        public List<SeatJsonPoco> seats { get; set;  }
-
-        public TrainJsonPoco()
-        {
-            this.seats = new List<SeatJsonPoco>();
         }
     }
 

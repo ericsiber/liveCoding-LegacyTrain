@@ -44,12 +44,10 @@ namespace TrainTrain
                 return InvalidReservation(trainId);
             }
 
-            var reservation = result as SeatsBooked;
+            var reservation = (SeatsBooked)result;
             await _trainDataService.Reserve(trainId, bookingReference, reservation.SeatIds.ToList());
 
-            return
-                ValidReservation(trainId, bookingReference, reservation.SeatIds.ToList());
-
+            return ValidReservation(trainId, bookingReference, reservation.SeatIds.ToList());
         }
       
 
