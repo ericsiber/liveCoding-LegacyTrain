@@ -75,20 +75,22 @@ namespace TrainTrain.Test.Acceptance
             Check.That(reservation).IsEqualTo($"{{\"train_id\": \"{TrainId}\", \"booking_reference\": \"{BookingReference}\", \"seats\": [\"1B\", \"2B\", \"3B\"]}}");
         }
 
-        /*[Test]
-        [Ignore("While refactoring")]
+        [Test]
         public async Task Reserve_all_seats_in_the_same_coach()
         {
             const int seatsRequestedCount = 2;
 
-            var trainDataService = BuildTrainDataService(TrainTopology.With_2_coaches_and_9_seats_already_reserved_in_the_first_coach());
+            var trainDataService =
+                BuildTrainDataService(TrainTopology.With_2_coaches_and_9_seats_already_reserved_in_the_first_coach());
             var bookingReferenceService = BuildBookingReferenceService();
 
-            var webTicketManager = new BuildWebTicketManager(trainDataService, bookingReferenceService);
-            var reserve = await webTicketManager.SubmitReservation(TrainId, seatsRequestedCount);
+            var webTicketManager = BuildWebTicketManager(trainDataService, bookingReferenceService);
+            var reserve = await webTicketManager.Execute(TrainId, seatsRequestedCount);
 
-            Check.That(reserve).IsEqualTo($"{{\"train_id\": \"{TrainId}\", \"booking_reference\": \"{BookingReference}\", \"seats\": [\"1B\", \"2B\"]}}");
-        */
+            Check.That(reserve)
+                .IsEqualTo(
+                    $"{{\"train_id\": \"{TrainId}\", \"booking_reference\": \"{BookingReference}\", \"seats\": [\"1B\", \"2B\"]}}");
+        }
 
         private static IBookingReferenceService BuildBookingReferenceService()
         {

@@ -41,14 +41,22 @@ namespace TrainTrain.Domain
             var availableSeats = new List<Seat>();
             var numberUnreservedSeats = 0;
 
-            foreach (var seat in _seats)
+            foreach (var seatsOfCoach in _seats.GroupBy(seat => seat.CoachName))
             {
-                if (seat.IsNotReserved())
+                var coach = seatsOfCoach.Key;
+                var seats = seatsOfCoach;
+
+                if (seats.Count(seat => seat.IsNotReserved()) < seatsRequestedCount) continue;
+
+                foreach (var seat in seats)
                 {
-                    numberUnreservedSeats++;
-                    if (numberUnreservedSeats <= seatsRequestedCount)
+                    if (seat.IsNotReserved())
                     {
-                        availableSeats.Add(seat);
+                        numberUnreservedSeats++;
+                        if (numberUnreservedSeats <= seatsRequestedCount)
+                        {
+                            availableSeats.Add(seat);
+                        }
                     }
                 }
             }
