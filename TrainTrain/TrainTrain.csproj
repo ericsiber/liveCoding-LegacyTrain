@@ -63,7 +63,7 @@
     <Compile Include="SeatJsonPoco.cs" />
     <Compile Include="Domain\Train.cs" />
     <Compile Include="Infrastructure\TrainDataService.cs" />
-    <Compile Include="WebTicketReservation.cs" />
+    <Compile Include="Domain\WebTicketReservation.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TrainTrain.Dal\TrainTrain.Dal.csproj">

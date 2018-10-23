@@ -1,4 +1,5 @@
 ﻿using System;
+using TrainTrain.Domain;
 using TrainTrain.Infrastructure;
 using TrainTrain.Infrastructure.AdapterIn;
 using TrainTrain.Infrastructure.AdapterOut;

@@ -1,12 +1,9 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using TrainTrain.Domain;
 using TrainTrain.Domain.PortIn;
 using TrainTrain.Domain.PortOut;
-using TrainTrain.Infrastructure;
-using TrainTrain.Infrastructure.AdapterOut;
 
-namespace TrainTrain
+namespace TrainTrain.Domain
 {
     public class WebTicketReservation : Reserve
     {
