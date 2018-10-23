@@ -16,19 +16,19 @@ namespace TrainTrain.Domain
             _seats = seats;
         }
 
-        public DomainEvent TryToBook(int seatsRequestedCount, string bookingReference)
+        public DomainEvent TryToReserve(int seatsRequestedCount, string bookingReference)
         {
             if (!CanReserve(seatsRequestedCount))
             {
-                return new SeatsBookedFailedBecauseNotEnoughAvailableSeats(_id);
+                return new SeatsReservedFailedBecauseNotEnoughAvailableSeats(_id);
             }
 
             var availableSeats = FindAvailableSeats(seatsRequestedCount);
             if (availableSeats.Count == seatsRequestedCount)
             {
-                return new SeatsBooked(_id, availableSeats,bookingReference);
+                return new SeatsReserved(_id, availableSeats,bookingReference);
             }
-            return new SeatsBookedFailedBecauseNotEnoughAvailableSeats(_id);
+            return new SeatsReservedFailedBecauseNotEnoughAvailableSeats(_id);
         }
 
         private bool CanReserve(int seatsRequestedCount)
@@ -43,7 +43,7 @@ namespace TrainTrain.Domain
 
             foreach (var seat in _seats)
             {
-                if (seat.IsNotBooked())
+                if (seat.IsNotReserved())
                 {
                     numberUnreservedSeats++;
                     if (numberUnreservedSeats <= seatsRequestedCount)
@@ -63,7 +63,7 @@ namespace TrainTrain.Domain
 
         private int ReservedSeats
         {
-            get { return _seats.Count(seat => !seat.IsNotBooked()); }
+            get { return _seats.Count(seat => !seat.IsNotReserved()); }
         }
 
         private int GetAvailableSeatsForReservation()

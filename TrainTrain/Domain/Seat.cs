@@ -2,21 +2,21 @@
 {
     public class Seat
     {
-        private readonly bool _isBooked;
+        private readonly bool _isReserved;
 
         public string CoachName { get; }
         public int SeatNumber { get; }
 
-        public Seat(string coachName, int seatNumber, bool isBooked)
+        public Seat(string coachName, int seatNumber, bool isReserved)
         {
-            _isBooked = isBooked;
+            _isReserved = isReserved;
             CoachName = coachName;
             SeatNumber = seatNumber;
         }
 
-        public bool IsNotBooked()
+        public bool IsNotReserved()
         {
-            return !_isBooked;
+            return !_isReserved;
         }
     }
 }
