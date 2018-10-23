@@ -13,7 +13,7 @@ namespace TrainTrain.Infrastructure
     {
         private const string UriTrainDataService = "http://localhost:50680";
 
-        public async Task<Train> GetTrain(string trainId)
+        public async Task<Train> GetTrain(TrainId trainId)
         {
             string jsonTrainTopology;
             using (var client = new HttpClient())
@@ -31,7 +31,7 @@ namespace TrainTrain.Infrastructure
             return new Train(trainId, AdaptTrainTopology(jsonTrainTopology));
         }
 
-        public async Task SubmitReservation(string trainId, string bookingRef, List<Seat> availableSeats)
+        public async Task SubmitReservation(TrainId trainId, string bookingRef, List<Seat> availableSeats)
         {
             using (var client = new HttpClient())
             {
@@ -49,7 +49,7 @@ namespace TrainTrain.Infrastructure
             }
         }
 
-        private static string BuildPostContent(string trainId, string bookingRef, IEnumerable<Seat> availableSeats)
+        private static string BuildPostContent(TrainId trainId, string bookingRef, IEnumerable<Seat> availableSeats)
         {
             var seats = new StringBuilder("[");
             bool firstTime = true;

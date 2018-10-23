@@ -16,7 +16,7 @@ namespace TrainTrain.Infrastructure.AdapterIn
             _reserve = reserve;
         }
 
-        public async Task<string> Execute(string trainId, int seatsRequested)
+        public async Task<string> Execute(TrainId trainId, int seatsRequested)
         {
             var bookingEvent = await _reserve.Execute(trainId, seatsRequested);
             return HandleBookingEvents(bookingEvent);
@@ -34,13 +34,13 @@ namespace TrainTrain.Infrastructure.AdapterIn
         }
 
 
-        private string ValidReservation(string trainId, string bookingReference, List<Seat> availableSeats)
+        private string ValidReservation(TrainId trainId, string bookingReference, List<Seat> availableSeats)
         {
             return $"{{\"train_id\": \"{trainId}\", \"booking_reference\": \"{bookingReference}\"," +
                    $" \"seats\": {dumpSeats(availableSeats)}}}";
         }
 
-        private static string InvalidReservation(string trainId)
+        private static string InvalidReservation(TrainId trainId)
         {
             return $"{{\"train_id\": \"{trainId}\", \"booking_reference\": \"\", \"seats\": []}}";
         }

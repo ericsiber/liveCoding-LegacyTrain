@@ -8,7 +8,7 @@ namespace TrainTrain.Domain.PortOut
 {
     public interface GetTrainTopology
     {
-        Task<Train> Execute(string id);
+        Task<Train> Execute(TrainId id);
     }
 
    

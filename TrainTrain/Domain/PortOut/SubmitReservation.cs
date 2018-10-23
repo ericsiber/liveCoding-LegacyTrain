@@ -5,6 +5,6 @@ namespace TrainTrain.Domain.PortOut
 {
     public interface SubmitReservation
     {
-        Task Execute(string trainId, string bookingReference, IList<Seat> seats);
+        Task Execute(TrainId trainId, string bookingReference, IList<Seat> seats);
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TrainTrain.Api.Models;
+using TrainTrain.Domain;
 using TrainTrain.Infrastructure.AdapterIn;
 
 namespace TrainTrain.Api.Controllers
@@ -33,7 +34,7 @@ namespace TrainTrain.Api.Controllers
         [HttpPost]
         public async Task<string> Post([FromBody]ReservationRequestDto reservationRequest)
         {
-            return await _reserveAdapter.Execute(reservationRequest.train_id, reservationRequest.number_of_seats);
+            return await _reserveAdapter.Execute(new TrainId( reservationRequest.train_id), reservationRequest.number_of_seats);
         }
 
         [HttpPut("{id}")]

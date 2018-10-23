@@ -19,7 +19,7 @@ namespace TrainTrain.ConsoleApp
 
             var adapter = new ReserveAdapter(webTicketReservation);
 
-            var jsonResult = adapter.Execute(train, seats);
+            var jsonResult = adapter.Execute(new TrainId( train ), seats);
 
             Console.WriteLine(jsonResult.Result);
 

@@ -7,7 +7,7 @@ namespace TrainTrain.Domain
     public interface Reservation
     {
         bool Success();
-        DomainEvent GetEvent(string trainId, string bookingReference);
+        DomainEvent GetEvent(TrainId trainId, string bookingReference);
     }
 
     public class SuccessReservation: Reservation
@@ -24,7 +24,7 @@ namespace TrainTrain.Domain
             return true;
         }
 
-        public DomainEvent GetEvent(string trainId, string bookingReference)
+        public DomainEvent GetEvent(TrainId trainId, string bookingReference)
         {
             return new SeatsReserved(trainId, _seats.ToList(), bookingReference);
             
@@ -38,7 +38,7 @@ namespace TrainTrain.Domain
             return false;
         }
 
-        public DomainEvent GetEvent(string trainId, string bookingReference)
+        public DomainEvent GetEvent(TrainId trainId, string bookingReference)
         {
             return new SeatsReservedFailedBecauseNotEnoughAvailableSeats(trainId);
         }

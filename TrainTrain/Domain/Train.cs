@@ -6,13 +6,13 @@ namespace TrainTrain.Domain
 {
     public class Train
     {
-        private readonly string _id;
+        private readonly TrainId _id;
         private readonly IList<Seat> _seats;
         private readonly List<Coach> _coaches;
         private const decimal CapacityRatioThreshold = 0.7M;
 
 
-        public Train(string id, IList<Seat> seats)
+        public Train(TrainId id, IList<Seat> seats)
         {
             _id = id;
             _seats = seats;

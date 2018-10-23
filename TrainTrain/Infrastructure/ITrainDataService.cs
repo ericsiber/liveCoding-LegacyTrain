@@ -6,7 +6,7 @@ namespace TrainTrain.Infrastructure
 {
     public interface ITrainDataService
     {
-        Task<Train> GetTrain(string trainId);
-        Task SubmitReservation(string trainId, string bookingRef, List<Seat> availableSeats);
+        Task<Train> GetTrain(TrainId trainId);
+        Task SubmitReservation(TrainId trainId, string bookingRef, List<Seat> availableSeats);
     }
 }

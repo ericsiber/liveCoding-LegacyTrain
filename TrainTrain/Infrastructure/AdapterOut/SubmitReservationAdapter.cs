@@ -15,7 +15,7 @@ namespace TrainTrain.Infrastructure.AdapterOut
             _trainDataService = trainDataService;
         }
 
-        public Task Execute(string trainId, string bookingReference, IList<Seat> seats)
+        public Task Execute(TrainId trainId, string bookingReference, IList<Seat> seats)
         {
             return _trainDataService.SubmitReservation(trainId, bookingReference, seats.ToList());
         }

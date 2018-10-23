@@ -11,7 +11,7 @@ namespace TrainTrain.Test.Acceptance
 {
     public class TrainTrainShould
     {
-        private const string TrainId = "9043-2018-05-24";
+        private static readonly TrainId TrainId = new TrainId("9043-2018-05-24");
         private const string BookingReference = "75bcd15";
 
         [Test]

@@ -19,7 +19,7 @@ namespace TrainTrain.Domain
             _generateBookingReference = generateBookingReference;
         }
 
-        public async Task<DomainEvent> Execute(string trainId, int seatsRequested)
+        public async Task<DomainEvent> Execute(TrainId trainId, int seatsRequested)
         {
             var train = await _getTrainTopology.Execute(trainId);
             var bookingReference = await _generateBookingReference.Execute();

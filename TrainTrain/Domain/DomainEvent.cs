@@ -9,11 +9,11 @@ namespace TrainTrain.Domain
 
     public class SeatsReserved : DomainEvent
     {
-        public string TrainId { get; }
+        public TrainId TrainId { get; }
         public IEnumerable<Seat> SeatIds { get; }
         public string BookingReference { get; }
 
-        public SeatsReserved(string trainId, List<Seat> seatIds, string bookingReference)
+        public SeatsReserved(TrainId trainId, List<Seat> seatIds, string bookingReference)
         {
             TrainId = trainId;
             SeatIds = seatIds;
@@ -23,9 +23,9 @@ namespace TrainTrain.Domain
 
     public class SeatsReservedFailedBecauseNotEnoughAvailableSeats : DomainEvent
     {
-        public string TrainId { get; }
+        public TrainId TrainId { get; }
 
-        public SeatsReservedFailedBecauseNotEnoughAvailableSeats(string trainId)
+        public SeatsReservedFailedBecauseNotEnoughAvailableSeats(TrainId trainId)
         {
             TrainId = trainId;
         }

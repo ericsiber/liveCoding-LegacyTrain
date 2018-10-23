@@ -4,6 +4,6 @@ namespace TrainTrain.Domain.PortIn
 {
     public interface Reserve
     {
-        Task<DomainEvent> Execute(string trainId, int seatsRequested);
+        Task<DomainEvent> Execute(TrainId trainId, int seatsRequested);
     }
 }

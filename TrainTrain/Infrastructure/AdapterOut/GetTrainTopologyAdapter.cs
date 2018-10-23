@@ -13,7 +13,7 @@ namespace TrainTrain.Infrastructure.AdapterOut
             _trainService = trainService;
         }
 
-        public Task<Train> Execute(string id)
+        public Task<Train> Execute(TrainId id)
         {
             return _trainService.GetTrain(id);
         }
