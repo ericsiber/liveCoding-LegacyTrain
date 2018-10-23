@@ -8,6 +8,7 @@ namespace TrainTrain.Domain
     {
         private readonly string _id;
         private readonly IList<Seat> _seats;
+        private const decimal CapacityRatioThreshold = 0.7M;
 
         public Train(string id, IList<Seat> seats)
         {
@@ -67,7 +68,7 @@ namespace TrainTrain.Domain
 
         private int GetAvailableSeatsForReservation()
         {
-            return (int)Math.Floor(ThresholdManager.GetReservationMaxPercent() * GetNbSeats());
+            return (int)Math.Floor(CapacityRatioThreshold * GetNbSeats());
         }
     }
 }
