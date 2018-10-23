@@ -11,11 +11,11 @@ namespace TrainTrain.Api.Controllers
     [Route("api/[controller]")]
     public class ReservationsController : Controller
     {
-        private readonly ReservationAdapter _reservationAdapter;
+        private readonly ReserveAdapter _reserveAdapter;
 
-        public ReservationsController(ReservationAdapter reservationAdapter)
+        public ReservationsController(ReserveAdapter reserveAdapter)
         {
-            _reservationAdapter = reservationAdapter;
+            _reserveAdapter = reserveAdapter;
         }
 
         [HttpGet]
@@ -33,7 +33,7 @@ namespace TrainTrain.Api.Controllers
         [HttpPost]
         public async Task<string> Post([FromBody]ReservationRequestDto reservationRequest)
         {
-            return await _reservationAdapter.Reserve(reservationRequest.train_id, reservationRequest.number_of_seats);
+            return await _reserveAdapter.Execute(reservationRequest.train_id, reservationRequest.number_of_seats);
         }
 
         [HttpPut("{id}")]

@@ -1,5 +1,6 @@
 ﻿using System;
 using TrainTrain.Infrastructure;
+using TrainTrain.Infrastructure.AdapterIn;
 using TrainTrain.Infrastructure.AdapterOut;
 
 namespace TrainTrain.ConsoleApp
@@ -13,9 +14,11 @@ namespace TrainTrain.ConsoleApp
 
             var trainDataService = new TrainDataService();
             var bookingReferenceService = new BookingReferenceService();
-            var manager = new WebTicketReservation(new SubmitReservationAdapter(trainDataService), new GetTrainTopologyAdapter(trainDataService), new GenerateBookingReferenceAdapter(bookingReferenceService));
+            var webTicketReservation = new WebTicketReservation(new SubmitReservationAdapter(trainDataService), new GetTrainTopologyAdapter(trainDataService), new GenerateBookingReferenceAdapter(bookingReferenceService));
 
-            var jsonResult = manager.Execute(train, seats);
+            var adapter = new ReserveAdapter(webTicketReservation);
+
+            var jsonResult = adapter.Execute(train, seats);
 
             Console.WriteLine(jsonResult.Result);
 

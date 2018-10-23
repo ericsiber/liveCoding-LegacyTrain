@@ -7,16 +7,16 @@ using TrainTrain.Domain.PortIn;
 
 namespace TrainTrain.Infrastructure.AdapterIn
 {
-    public class ReservationAdapter
+    public class ReserveAdapter
     {
         private readonly Reserve _reserve;
 
-        public ReservationAdapter(Reserve reserve)
+        public ReserveAdapter(Reserve reserve)
         {
             _reserve = reserve;
         }
 
-        public async Task<string> Reserve(string trainId, int seatsRequested)
+        public async Task<string> Execute(string trainId, int seatsRequested)
         {
             var bookingEvent = await _reserve.Execute(trainId, seatsRequested);
             return HandleBookingEvents(bookingEvent);

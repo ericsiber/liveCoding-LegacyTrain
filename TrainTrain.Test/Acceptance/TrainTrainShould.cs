@@ -23,7 +23,7 @@ namespace TrainTrain.Test.Acceptance
             var bookingReferenceService = BuildBookingReferenceService();
 
             var webTicketManager = BuildWebTicketManager(trainDataService, bookingReferenceService);
-            var reservation = await webTicketManager.Reserve(TrainId, seatsRequestedCount);
+            var reservation = await webTicketManager.Execute(TrainId, seatsRequestedCount);
 
             Check.That(reservation).IsEqualTo($"{{\"train_id\": \"{TrainId}\", \"booking_reference\": \"{BookingReference}\", \"seats\": [\"1A\", \"2A\", \"3A\"]}}");
         }
@@ -37,7 +37,7 @@ namespace TrainTrain.Test.Acceptance
             var bookingReferenceService = BuildBookingReferenceService();
 
             var webTicketManager = BuildWebTicketManager(trainDataService, bookingReferenceService);
-            var reservation = await webTicketManager.Reserve(TrainId, seatsRequestedCount);
+            var reservation = await webTicketManager.Execute(TrainId, seatsRequestedCount);
 
             Check.That(reservation).IsEqualTo($"{{\"train_id\": \"{TrainId}\", \"booking_reference\": \"\", \"seats\": []}}");
         }
@@ -51,14 +51,14 @@ namespace TrainTrain.Test.Acceptance
             var bookingReferenceService = BuildBookingReferenceService();
 
             var webTicketManager = BuildWebTicketManager(trainDataService, bookingReferenceService);
-            var reservation = await webTicketManager.Reserve(TrainId, seatsRequestedCount);
+            var reservation = await webTicketManager.Execute(TrainId, seatsRequestedCount);
 
             Check.That(reservation).IsEqualTo($"{{\"train_id\": \"{TrainId}\", \"booking_reference\": \"\", \"seats\": []}}");
         }
 
-        private static ReservationAdapter BuildWebTicketManager(ITrainDataService trainDataService, IBookingReferenceService bookingReferenceService)
+        private static ReserveAdapter BuildWebTicketManager(ITrainDataService trainDataService, IBookingReferenceService bookingReferenceService)
         {
-            return new ReservationAdapter(new WebTicketReservation(new SubmitReservationAdapter(trainDataService), new GetTrainTopologyAdapter(trainDataService), new GenerateBookingReferenceAdapter(bookingReferenceService)));
+            return new ReserveAdapter(new WebTicketReservation(new SubmitReservationAdapter(trainDataService), new GetTrainTopologyAdapter(trainDataService), new GenerateBookingReferenceAdapter(bookingReferenceService)));
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace TrainTrain.Test.Acceptance
             var bookingReferenceService = BuildBookingReferenceService();
 
             var webTicketManager = BuildWebTicketManager(trainDataService, bookingReferenceService);
-            var reservation = await webTicketManager.Reserve(TrainId, seatsRequestedCount);
+            var reservation = await webTicketManager.Execute(TrainId, seatsRequestedCount);
 
             Check.That(reservation).IsEqualTo($"{{\"train_id\": \"{TrainId}\", \"booking_reference\": \"{BookingReference}\", \"seats\": [\"1B\", \"2B\", \"3B\"]}}");
         }
