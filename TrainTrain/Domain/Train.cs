@@ -30,7 +30,7 @@ namespace TrainTrain.Domain
             var availableSeats = FindAvailableSeats(seatsRequestedCount);
             if (availableSeats.Count == seatsRequestedCount)
             {
-                return new SeatsReserved(_id, availableSeats,bookingReference);
+                return new SeatsReserved(_id, availableSeats, bookingReference);
             }
             return new SeatsReservedFailedBecauseNotEnoughAvailableSeats(_id);
         }
@@ -42,9 +42,9 @@ namespace TrainTrain.Domain
 
         private List<Seat> FindAvailableSeats(int seatsRequestedCount)
         {
-            return _coaches.Where(coach => coach.CanReserve(seatsRequestedCount))
-                .Select(coach => coach.GetSeatNotReserved().Take(seatsRequestedCount).ToList()).FirstOrDefault()??new List<Seat>();
-
+            return _coaches
+                       .Select(coach => coach.TryReserve(seatsRequestedCount)?.ToList())
+                .FirstOrDefault(coach => coach != null)?? new List<Seat>();
         }
 
         private int GetNbSeats()

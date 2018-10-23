@@ -23,5 +23,15 @@ namespace TrainTrain.Domain
         {
             return _seats.Where(seat => seat.IsNotReserved());
         }
+
+        public IEnumerable<Seat> TryReserve(int seatsRequestedCount)
+        {
+            if (CanReserve(seatsRequestedCount))
+            {
+                return GetSeatNotReserved().Take(seatsRequestedCount);
+            }
+
+            return null;
+        }
     }
 }
