@@ -16,7 +16,7 @@ namespace TrainTrain.Domain
 
         public bool CanReserve(int seatsRequestedCount)
         {
-            return _seats.Count(seat => seat.IsNotReserved()) >= seatsRequestedCount;
+            return GetSeatNotReserved().Count() >= seatsRequestedCount;
         }
 
         public IEnumerable<Seat> GetSeatNotReserved()

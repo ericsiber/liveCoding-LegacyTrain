@@ -42,23 +42,9 @@ namespace TrainTrain.Domain
 
         private List<Seat> FindAvailableSeats(int seatsRequestedCount)
         {
-            var availableSeats = new List<Seat>();
-            var numberUnreservedSeats = 0;
+            return _coaches.Where(coach => coach.CanReserve(seatsRequestedCount))
+                .Select(coach => coach.GetSeatNotReserved().Take(seatsRequestedCount).ToList()).FirstOrDefault()??new List<Seat>();
 
-            var seatsByCoach = _coaches.Where(coach => coach.CanReserve(seatsRequestedCount));
-            foreach (var seatsOfCoach in seatsByCoach)
-            {
-                foreach (var seat in seatsOfCoach.GetSeatNotReserved())
-                {
-                    numberUnreservedSeats++;
-                    if (numberUnreservedSeats <= seatsRequestedCount)
-                    {
-                        availableSeats.Add(seat);
-                    }
-                }
-            }
-
-            return availableSeats;
         }
 
         private int GetNbSeats()
