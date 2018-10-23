@@ -11,23 +11,18 @@ namespace TrainTrain
             this.Seats = seats;
         }
 
-        public int GetNbSeats()
+        private int GetNbSeats()
         {
             return this.Seats.Count;
         }
 
-        public int ReservedSeats
+        private int ReservedSeats
         {
             get { return Seats.Count(s => !String.IsNullOrEmpty(s.BookingRef)); }
         }
         public List<Seat> Seats { get; set; }
 
-        public bool HasLessThanThreshold(int i)
-        {
-            return ReservedSeats < i;
-        }
-
-        public int GetAvailableSeatsForReservation()
+        private int GetAvailableSeatsForReservation()
         {
             return (int)Math.Floor(ThresholdManager.GetReservationMaxPercent() * GetNbSeats());
         }
@@ -50,6 +45,11 @@ namespace TrainTrain
             }
 
             return availableSeats;
+        }
+
+        public bool CanReserve(int seatsRequestedCount)
+        {
+            return ReservedSeats + seatsRequestedCount <= GetAvailableSeatsForReservation();
         }
     }
 

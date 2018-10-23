@@ -11,7 +11,6 @@ namespace TrainTrain
     {
         private const string UriBookingReferenceService = "http://localhost:51691/";
         private const string UriTrainDataService = "http://localhost:50680";
-        private readonly ITrainCaching _trainCaching;
         private readonly ITrainDataService _trainDataService;
         private readonly IBookingReferenceService _bookingReferenceService;
 
@@ -23,13 +22,10 @@ namespace TrainTrain
         {
             _trainDataService = trainDataService;
             _bookingReferenceService = bookingReferenceService;
-            _trainCaching = new TrainCaching();
-            _trainCaching.Clear();
         }
 
         public WebTicketManager(ITrainCaching trainCaching, ITrainDataService trainDataService, IBookingReferenceService bookingReferenceService)
         {
-            _trainCaching = trainCaching;
             _trainDataService = trainDataService;
             _bookingReferenceService = bookingReferenceService;
         }
@@ -38,20 +34,13 @@ namespace TrainTrain
         {
             var train = await _trainDataService.GetTrain(trainId);
 
-            var nbSeatsReservedAfterReservation = train.ReservedSeats + seatsRequestedCount;
-            if (nbSeatsReservedAfterReservation > train.GetAvailableSeatsForReservation())
+            if (!train.CanReserve(seatsRequestedCount))
             {
-                return $"{{\"train_id\": \"{trainId}\", \"booking_reference\": \"\", \"seats\": []}}";
+                return InvalidReservation(trainId);
             }
 
             var numberOfReservation = 0;
             var availableSeats = train.FindAvailableSeats(seatsRequestedCount);
-
-
-            if (availableSeats.Count != seatsRequestedCount)
-            {
-                return $"{{\"train_id\": \"{trainId}\", \"booking_reference\": \"\", \"seats\": []}}";
-            }
 
             var bookingReference = await _bookingReferenceService.GetBookingReference();
 
@@ -63,16 +52,25 @@ namespace TrainTrain
 
             if (numberOfReservation != seatsRequestedCount)
             {
-                return $"{{\"train_id\": \"{trainId}\", \"booking_reference\": \"\", \"seats\": []}}";
+                return InvalidReservation(trainId);
             }
 
-            await _trainCaching.Save(trainId, train, bookingReference);
 
             await _trainDataService.Reserve(trainId, bookingReference, availableSeats);
 
             return
-                $"{{\"train_id\": \"{trainId}\", \"booking_reference\": \"{bookingReference}\", \"seats\": {dumpSeats(availableSeats)}}}";
+                ValidReservation(trainId, bookingReference, availableSeats);
 
+        }
+
+        private string ValidReservation(string trainId, string bookingReference, List<Seat> availableSeats)
+        {
+            return $"{{\"train_id\": \"{trainId}\", \"booking_reference\": \"{bookingReference}\", \"seats\": {dumpSeats(availableSeats)}}}";
+        }
+
+        private static string InvalidReservation(string trainId)
+        {
+            return $"{{\"train_id\": \"{trainId}\", \"booking_reference\": \"\", \"seats\": []}}";
         }
 
         private string dumpSeats(IEnumerable<Seat> seats)
