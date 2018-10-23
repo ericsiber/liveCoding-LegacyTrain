@@ -106,7 +106,7 @@ namespace TrainTrain.Test.Acceptance
 
             Check.That(reserve)
                 .IsEqualTo(
-                    $"{{\"train_id\": \"{TrainId}\", \"booking_reference\": \"{BookingReference}\", \"seats\": []}}");
+                    $"{{\"train_id\": \"{TrainId}\", \"booking_reference\": \"\", \"seats\": []}}");
         }
 
         private static IBookingReferenceService BuildBookingReferenceService()

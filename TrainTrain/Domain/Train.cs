@@ -37,9 +37,9 @@ namespace TrainTrain.Domain
 
         private DomainEvent TryToReserveInCoach(int seatsRequestedCount, string bookingReference)
         {
-            return _coaches
+            return (_coaches
                 .Select(coach => coach.TryReserve(seatsRequestedCount))
-                .First(reservation => reservation.Success())
+                .FirstOrDefault(reservation => reservation.Success())?? new FailReservation())
                 .GetEvent(_id, bookingReference);
         }
 
