@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -36,27 +37,21 @@ namespace TrainTrain
 
             var bookingReference = await _bookingReferenceService.GetBookingReference();
 
-            var numberOfReservation = 0;
-            var availableSeats = train.FindAvailableSeats(seatsRequestedCount);
-
-            foreach (var availableSeat in availableSeats)
-            {
-                availableSeat.BookingRef = bookingReference;
-                numberOfReservation++;
-            }
-
-            if (numberOfReservation != seatsRequestedCount)
+            var result = train.TryToBook(seatsRequestedCount, bookingReference, trainId);
+            
+            if (result is SeatsBookedFailedBecauseNotEnoughAvailableSeats)
             {
                 return InvalidReservation(trainId);
             }
 
-
-            await _trainDataService.Reserve(trainId, bookingReference, availableSeats);
+            var reservation = result as SeatsBooked;
+            await _trainDataService.Reserve(trainId, bookingReference, reservation.SeatIds.ToList());
 
             return
-                ValidReservation(trainId, bookingReference, availableSeats);
+                ValidReservation(trainId, bookingReference, reservation.SeatIds.ToList());
 
         }
+      
 
         private string ValidReservation(string trainId, string bookingReference, List<Seat> availableSeats)
         {
