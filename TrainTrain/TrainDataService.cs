@@ -92,7 +92,7 @@ namespace TrainTrain
                 foreach (var stuff in allStuffs)
                 {
                     var seat = stuff.Value.ToObject<SeatJsonPoco>();
-                    seats.Add(new Seat(seat.coach, Int32.Parse(seat.seat_number), seat.booking_reference));
+                    seats.Add(new Seat(seat.coach, Int32.Parse(seat.seat_number), seat.booking_reference != ""));
                 }
             }
 

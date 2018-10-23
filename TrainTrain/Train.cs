@@ -42,7 +42,7 @@ namespace TrainTrain
 
             foreach (var seat in _seats)
             {
-                if (seat.IsNotReserved())
+                if (seat.IsNotBooked())
                 {
                     numberUnreservedSeats++;
                     if (numberUnreservedSeats <= seatsRequestedCount)
@@ -62,7 +62,7 @@ namespace TrainTrain
 
         private int ReservedSeats
         {
-            get { return _seats.Count(seat => !seat.IsNotReserved()); }
+            get { return _seats.Count(seat => !seat.IsNotBooked()); }
         }
 
         private int GetAvailableSeatsForReservation()
