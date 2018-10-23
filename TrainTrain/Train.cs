@@ -50,13 +50,18 @@ namespace TrainTrain
             return availableSeats;
         }
 
-        public bool CanReserve(int seatsRequestedCount)
+        private bool CanReserve(int seatsRequestedCount)
         {
             return ReservedSeats + seatsRequestedCount <= GetAvailableSeatsForReservation();
         }
 
         public DomainEvent TryToBook(int seatsRequestedCount, string bookingReference)
         {
+            if (!CanReserve(seatsRequestedCount))
+            {
+                return new SeatsBookedFailedBecauseNotEnoughAvailableSeats(_id);
+            }
+
             var availableSeats = FindAvailableSeats(seatsRequestedCount);
             var numberOfReservation = 0;
 

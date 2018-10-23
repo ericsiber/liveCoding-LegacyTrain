@@ -29,13 +29,9 @@ namespace TrainTrain
         public async Task<string> Reserve(string trainId, int seatsRequestedCount)
         {
             var train = await _trainDataService.GetTrain(trainId);
-
-            if (!train.CanReserve(seatsRequestedCount))
-            {
-                return InvalidReservation(trainId);
-            }
-
             var bookingReference = await _bookingReferenceService.GetBookingReference();
+
+            
             var bookingEvent = train.TryToBook(seatsRequestedCount, bookingReference);
             return await HandleBookingEvents(bookingEvent);
         }
