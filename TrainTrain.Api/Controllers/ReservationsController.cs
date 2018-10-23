@@ -11,37 +11,36 @@ namespace TrainTrain.Api.Controllers
     [Route("api/[controller]")]
     public class ReservationsController : Controller
     {
-        private const string UriTrainDataService = "http://localhost:50680";
+        private readonly ReservationAdapter _reservationAdapter;
 
-        // GET api/values
+        public ReservationsController(ReservationAdapter reservationAdapter)
+        {
+            _reservationAdapter = reservationAdapter;
+        }
+
         [HttpGet]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
         }
 
-        // GET api/values/5
         [HttpGet("{id}")]
         public string Get(int id)
         {
             return "value";
         }
 
-        // POST api/reservations
         [HttpPost]
         public async Task<string> Post([FromBody]ReservationRequestDto reservationRequest)
         {
-            var adapter = new ReservationAdapter(new WebTicketReservation());
-            return await adapter.ReserveLegacy(reservationRequest.train_id, reservationRequest.number_of_seats);
+            return await _reservationAdapter.Reserve(reservationRequest.train_id, reservationRequest.number_of_seats);
         }
 
-        // PUT api/values/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
         {
         }
 
-        // DELETE api/values/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

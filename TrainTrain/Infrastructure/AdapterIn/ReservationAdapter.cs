@@ -9,7 +9,6 @@ namespace TrainTrain.Infrastructure.AdapterIn
 {
     public class ReservationAdapter
     {
-        //private readonly ITrainDataService _trainDataService;
         private readonly Reservation _reservation;
 
         public ReservationAdapter(Reservation reservation)
@@ -17,7 +16,7 @@ namespace TrainTrain.Infrastructure.AdapterIn
             _reservation = reservation;
         }
 
-        public async Task<string> ReserveLegacy(string trainId, int seatsRequested)
+        public async Task<string> Reserve(string trainId, int seatsRequested)
         {
             var bookingEvent = await _reservation.Reserve(trainId, seatsRequested);
             return HandleBookingEvents(bookingEvent);
