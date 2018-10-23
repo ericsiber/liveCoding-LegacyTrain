@@ -4,6 +4,7 @@ using NSubstitute;
 using NUnit.Framework;
 using TrainTrain.Domain;
 using TrainTrain.Infrastructure;
+using TrainTrain.Infrastructure.AdapterIn;
 
 namespace TrainTrain.Test.Acceptance
 {
@@ -54,9 +55,9 @@ namespace TrainTrain.Test.Acceptance
             Check.That(reservation).IsEqualTo($"{{\"train_id\": \"{TrainId}\", \"booking_reference\": \"\", \"seats\": []}}");
         }
 
-        private static WebTicketReservation BuildWebTicketManager(ITrainDataService trainDataService, IBookingReferenceService bookingReferenceService)
+        private static ReservationAdapter BuildWebTicketManager(ITrainDataService trainDataService, IBookingReferenceService bookingReferenceService)
         {
-            return new WebTicketReservation(trainDataService, bookingReferenceService);
+            return new ReservationAdapter(trainDataService, new WebTicketReservation(trainDataService, bookingReferenceService));
         }
 
         [Test]
