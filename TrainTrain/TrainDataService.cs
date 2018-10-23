@@ -32,7 +32,7 @@ namespace TrainTrain
                 response.EnsureSuccessStatusCode();
                 jsonTrainTopology = await response.Content.ReadAsStringAsync();
             }
-            return new Train(AdaptTrainTopology(jsonTrainTopology));
+            return new Train(trainId, AdaptTrainTopology(jsonTrainTopology));
         }
 
         public async Task Reserve(string trainId, string bookingRef, List<Seat> availableSeats)

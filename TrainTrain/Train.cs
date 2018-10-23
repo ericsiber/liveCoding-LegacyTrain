@@ -6,8 +6,11 @@ namespace TrainTrain
 {
     public class Train
     {
-        public Train(List<Seat> seats)
+        private readonly string _id;
+
+        public Train(string id, List<Seat> seats)
         {
+            _id = id;
             Seats = seats;
         }
 
@@ -20,7 +23,7 @@ namespace TrainTrain
         {
             get { return Seats.Count(s => !string.IsNullOrEmpty(s.BookingRef)); }
         }
-        public List<Seat> Seats { get; private set; }
+        public List<Seat> Seats { get; }
 
         private int GetAvailableSeatsForReservation()
         {
@@ -52,7 +55,7 @@ namespace TrainTrain
             return ReservedSeats + seatsRequestedCount <= GetAvailableSeatsForReservation();
         }
 
-        public DomainEvent TryToBook(int seatsRequestedCount, string bookingReference, string trainId)
+        public DomainEvent TryToBook(int seatsRequestedCount, string bookingReference)
         {
             var availableSeats = FindAvailableSeats(seatsRequestedCount);
             var numberOfReservation = 0;
@@ -66,16 +69,9 @@ namespace TrainTrain
 
             if (numberOfReservation == seatsRequestedCount)
             {
-                return new SeatsBooked(trainId, availableSeats,bookingReference);
+                return new SeatsBooked(_id, availableSeats,bookingReference);
             }
-            return new SeatsBookedFailedBecauseNotEnoughAvailableSeats(trainId);
+            return new SeatsBookedFailedBecauseNotEnoughAvailableSeats(_id);
         }
-    }
-
-    public class SeatJsonPoco
-    {
-        public string booking_reference { get; set; }
-        public string seat_number { get; set; }
-        public string coach { get; set; }
     }
 }

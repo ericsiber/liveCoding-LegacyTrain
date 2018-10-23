@@ -37,7 +37,7 @@ namespace TrainTrain
 
             var bookingReference = await _bookingReferenceService.GetBookingReference();
 
-            var result = train.TryToBook(seatsRequestedCount, bookingReference, trainId);
+            var result = train.TryToBook(seatsRequestedCount, bookingReference);
             
             if (result is SeatsBookedFailedBecauseNotEnoughAvailableSeats)
             {

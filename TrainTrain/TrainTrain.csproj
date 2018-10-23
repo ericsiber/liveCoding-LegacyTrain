@@ -52,6 +52,7 @@
     <Compile Include="ITrainDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Seat.cs" />
+    <Compile Include="SeatJsonPoco.cs" />
     <Compile Include="ThresholdManager.cs" />
     <Compile Include="Train.cs" />
     <Compile Include="TrainCaching.cs" />

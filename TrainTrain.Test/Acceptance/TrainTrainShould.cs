@@ -96,7 +96,7 @@ namespace TrainTrain.Test.Acceptance
         private static ITrainDataService BuildTrainDataService(string trainTopology)
         {
             var trainDataService = Substitute.For<ITrainDataService>();
-            trainDataService.GetTrain(TrainId).Returns(new Train(TrainDataService.AdaptTrainTopology(trainTopology)));
+            trainDataService.GetTrain(TrainId).Returns(new Train(TrainId, TrainDataService.AdaptTrainTopology(trainTopology)));
             return trainDataService;
         }
 
