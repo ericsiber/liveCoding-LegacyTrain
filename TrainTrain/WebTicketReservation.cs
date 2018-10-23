@@ -11,7 +11,7 @@ using TrainTrain.Infrastructure;
 
 namespace TrainTrain
 {
-    public class WebTicketReservation : Reservation
+    public class WebTicketReservation : Reserve
     {
         private const string UriBookingReferenceService = "http://localhost:51691/";
         private const string UriTrainDataService = "http://localhost:50680";
@@ -28,7 +28,7 @@ namespace TrainTrain
             _bookingReferenceService = bookingReferenceService;
         }
 
-        public async Task<DomainEvent> Reserve(string trainId, int seatsRequested)
+        public async Task<DomainEvent> Execute(string trainId, int seatsRequested)
         {
             var train = await _trainDataService.GetTrain(trainId);
             var bookingReference = await _bookingReferenceService.GetBookingReference();

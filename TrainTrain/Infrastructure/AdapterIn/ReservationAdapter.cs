@@ -9,16 +9,16 @@ namespace TrainTrain.Infrastructure.AdapterIn
 {
     public class ReservationAdapter
     {
-        private readonly Reservation _reservation;
+        private readonly Reserve _reserve;
 
-        public ReservationAdapter(Reservation reservation)
+        public ReservationAdapter(Reserve reserve)
         {
-            _reservation = reservation;
+            _reserve = reserve;
         }
 
         public async Task<string> Reserve(string trainId, int seatsRequested)
         {
-            var bookingEvent = await _reservation.Reserve(trainId, seatsRequested);
+            var bookingEvent = await _reserve.Execute(trainId, seatsRequested);
             return HandleBookingEvents(bookingEvent);
         }
 

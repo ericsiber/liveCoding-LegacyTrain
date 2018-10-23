@@ -11,7 +11,7 @@ namespace TrainTrain.ConsoleApp
 
             var manager = new WebTicketReservation();
 
-            var jsonResult = manager.Reserve(train, seats);
+            var jsonResult = manager.Execute(train, seats);
 
             Console.WriteLine(jsonResult.Result);
 

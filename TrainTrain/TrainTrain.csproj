@@ -46,7 +46,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domain\PortIn\Reservation.cs" />
+    <Compile Include="Domain\PortIn\Reserve.cs" />
+    <Compile Include="Domain\PortOut\SubmitReservation.cs" />
     <Compile Include="Infrastructure\AdapterIn\ReservationAdapter.cs" />
     <Compile Include="Infrastructure\BookingReferenceService.cs" />
     <Compile Include="Domain\DomainEvent.cs" />

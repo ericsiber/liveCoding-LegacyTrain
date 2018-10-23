@@ -84,9 +84,9 @@ namespace TrainTrain.Test.Acceptance
             var bookingReferenceService = BuildBookingReferenceService();
 
             var webTicketManager = new BuildWebTicketManager(trainDataService, bookingReferenceService);
-            var reservation = await webTicketManager.SubmitReservation(TrainId, seatsRequestedCount);
+            var reserve = await webTicketManager.SubmitReservation(TrainId, seatsRequestedCount);
 
-            Check.That(reservation).IsEqualTo($"{{\"train_id\": \"{TrainId}\", \"booking_reference\": \"{BookingReference}\", \"seats\": [\"1B\", \"2B\"]}}");
+            Check.That(reserve).IsEqualTo($"{{\"train_id\": \"{TrainId}\", \"booking_reference\": \"{BookingReference}\", \"seats\": [\"1B\", \"2B\"]}}");
         */
 
         private static IBookingReferenceService BuildBookingReferenceService()
