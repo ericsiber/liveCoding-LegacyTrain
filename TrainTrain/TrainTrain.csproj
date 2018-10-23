@@ -46,6 +46,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\PortIn\Reservation.cs" />
     <Compile Include="Infrastructure\BookingReferenceService.cs" />
     <Compile Include="Domain\DomainEvent.cs" />
     <Compile Include="Infrastructure\IBookingReferenceService.cs" />
@@ -55,7 +56,7 @@
     <Compile Include="SeatJsonPoco.cs" />
     <Compile Include="Domain\Train.cs" />
     <Compile Include="Infrastructure\TrainDataService.cs" />
-    <Compile Include="WebTicketManager.cs" />
+    <Compile Include="WebTicketReservation.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TrainTrain.Dal\TrainTrain.Dal.csproj">

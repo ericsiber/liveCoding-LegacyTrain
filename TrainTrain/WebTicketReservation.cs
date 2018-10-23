@@ -6,35 +6,39 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using TrainTrain.Domain;
+using TrainTrain.Domain.PortIn;
 using TrainTrain.Infrastructure;
 
 namespace TrainTrain
 {
-    public class WebTicketManager
+    public class WebTicketReservation : Reservation
     {
         private const string UriBookingReferenceService = "http://localhost:51691/";
         private const string UriTrainDataService = "http://localhost:50680";
         private readonly ITrainDataService _trainDataService;
         private readonly IBookingReferenceService _bookingReferenceService;
 
-        public WebTicketManager():this(new TrainDataService(UriTrainDataService), new BookingReferenceService(UriBookingReferenceService))
+        public WebTicketReservation():this(new TrainDataService(UriTrainDataService), new BookingReferenceService(UriBookingReferenceService))
         {
         }
 
-        public WebTicketManager(ITrainDataService trainDataService, IBookingReferenceService bookingReferenceService)
+        public WebTicketReservation(ITrainDataService trainDataService, IBookingReferenceService bookingReferenceService)
         {
             _trainDataService = trainDataService;
             _bookingReferenceService = bookingReferenceService;
         }
 
-
-        public async Task<string> Reserve(string trainId, int seatsRequestedCount)
+        public async Task<DomainEvent> Reserve(string trainId, int seatsRequested)
         {
             var train = await _trainDataService.GetTrain(trainId);
             var bookingReference = await _bookingReferenceService.GetBookingReference();
 
-            
-            var bookingEvent = train.TryToReserve(seatsRequestedCount, bookingReference);
+            return train.TryToReserve(seatsRequested, bookingReference);
+        }
+
+        public async Task<string> ReserveLegacy(string trainId, int seatsRequested)
+        {
+            var bookingEvent = await Reserve(trainId, seatsRequested);
             return await HandleBookingEvents(bookingEvent);
         }
 
