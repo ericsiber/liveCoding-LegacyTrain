@@ -89,5 +89,26 @@
                    "\"10B\": {\"booking_reference\": \"\", \"seat_number\": \"10\", \"coach\": \"B\"}" +
                    "}}";
         }
+
+        public static string With_10_coaches_half_available()
+        {
+            return "{\"seats\": {" +
+
+                   "\"1A\": {\"booking_reference\": \"75bcd16\", \"seat_number\": \"1\", \"coach\": \"A\"}, " +
+                   "\"2A\": {\"booking_reference\": \"\", \"seat_number\": \"2\", \"coach\": \"A\"}, " +
+                   "\"1B\": {\"booking_reference\": \"75bcd15\", \"seat_number\": \"1\", \"coach\": \"B\"}, " +
+                   "\"2B\": {\"booking_reference\": \"\", \"seat_number\": \"2\", \"coach\": \"B\"}, " +
+                   "\"1C\": {\"booking_reference\": \"75bcd19\", \"seat_number\": \"1\", \"coach\": \"C\"}, " +
+                   "\"2C\": {\"booking_reference\": \"\", \"seat_number\": \"2\", \"coach\": \"C\"}, " +
+                   "\"1D\": {\"booking_reference\": \"a5bcd16\", \"seat_number\": \"1\", \"coach\": \"D\"}, " +
+                   "\"2D\": {\"booking_reference\": \"\", \"seat_number\": \"2\", \"coach\": \"D\"}, " +
+                   "\"1E\": {\"booking_reference\": \"c5bce14\", \"seat_number\": \"1\", \"coach\": \"E\"}, " +
+                   "\"2E\": {\"booking_reference\": \"\", \"seat_number\": \"2\", \"coach\": \"E\"}," +
+                   "\"1F\": {\"booking_reference\": \"75bcd19\", \"seat_number\": \"1\", \"coach\": \"F\"}, " +
+                   "\"2F\": {\"booking_reference\": \"\", \"seat_number\": \"2\", \"coach\": \"F\"}, " +
+                   "\"1G\": {\"booking_reference\": \"75bcd19\", \"seat_number\": \"1\", \"coach\": \"G\"}, " +
+                   "\"2G\": {\"booking_reference\": \"\", \"seat_number\": \"2\", \"coach\": \"G\"}, " +
+                   "}}";
+        }
     }
 }

@@ -92,6 +92,23 @@ namespace TrainTrain.Test.Acceptance
                     $"{{\"train_id\": \"{TrainId}\", \"booking_reference\": \"{BookingReference}\", \"seats\": [\"1B\", \"2B\"]}}");
         }
 
+        [Test]
+        public async Task Cannot_Reserve_When_Train_Is_Not_Full_But_Not_Coach_Is_Available()
+        {
+            const int seatsRequestedCount = 2;
+
+            var trainDataService =
+                BuildTrainDataService(TrainTopology.With_10_coaches_half_available());
+            var bookingReferenceService = BuildBookingReferenceService();
+
+            var webTicketManager = BuildWebTicketManager(trainDataService, bookingReferenceService);
+            var reserve = await webTicketManager.Execute(TrainId, seatsRequestedCount);
+
+            Check.That(reserve)
+                .IsEqualTo(
+                    $"{{\"train_id\": \"{TrainId}\", \"booking_reference\": \"{BookingReference}\", \"seats\": []}}");
+        }
+
         private static IBookingReferenceService BuildBookingReferenceService()
         {
             var bookingReferenceService = Substitute.For<IBookingReferenceService>();
