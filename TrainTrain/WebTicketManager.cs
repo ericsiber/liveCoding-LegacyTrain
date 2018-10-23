@@ -36,75 +36,43 @@ namespace TrainTrain
 
         public async Task<string> Reserve(string trainId, int seatsRequestedCount)
         {
-            List<Seat> availableSeats = new List<Seat>();
-            var availableSeatsCount = 0;
+            var train = await _trainDataService.GetTrain(trainId);
 
-            // get the train
-            var trainInst = await _trainDataService.GetTrain(trainId);
-
-            var nbSeatsReservedAfterReservation = trainInst.ReservedSeats + seatsRequestedCount;
-            if (nbSeatsReservedAfterReservation <= Math.Floor(ThresholdManager.GetReservationMaxPercent() * trainInst.GetNbSeats()))
+            var nbSeatsReservedAfterReservation = train.ReservedSeats + seatsRequestedCount;
+            if (nbSeatsReservedAfterReservation > train.GetAvailableSeatsForReservation())
             {
-                var numberOfReservation = 0;
-                var i = 0;
-                // find seats to reserve
-                foreach (var seat in trainInst.Seats)
-                {
-                    if (seat.IsNotReserved())
-                    {
-                        i++;
-                        if (i <= seatsRequestedCount)
-                        {
-                            availableSeats.Add(seat);
-                        }
-                    }
-                }
-
-                foreach (var a in availableSeats)
-                {
-                    availableSeatsCount++;
-                }
-
-                var reservedSets = 0;
-
-
-                string bookingRef;
-                if (availableSeatsCount != seatsRequestedCount)
-                {
-                    return string.Format("{{\"train_id\": \"{0}\", \"booking_reference\": \"\", \"seats\": []}}",
-                        trainId);
-                }
-                else
-                {
-                    bookingRef = await _bookingReferenceService.GetBookingReference();
-
-                    foreach (var availableSeat in availableSeats)
-                    {
-                        availableSeat.BookingRef = bookingRef;
-                        numberOfReservation++;
-                        reservedSets++;
-                    }
-                }
-
-                if (numberOfReservation == seatsRequestedCount)
-                {
-                    await _trainCaching.Save(trainId, trainInst, bookingRef);
-
-                    await _trainDataService.Reserve(trainId, bookingRef, availableSeats);
-
-                    var todod = "[TODOD]";
-
-
-                        return string.Format(
-                            "{{\"train_id\": \"{0}\", \"booking_reference\": \"{1}\", \"seats\": {2}}}", 
-                            trainId,
-                            bookingRef, 
-                            dumpSeats(availableSeats));
-                    
-                }
+                return $"{{\"train_id\": \"{trainId}\", \"booking_reference\": \"\", \"seats\": []}}";
             }
 
-            return string.Format("{{\"train_id\": \"{0}\", \"booking_reference\": \"\", \"seats\": []}}", trainId);
+            var numberOfReservation = 0;
+            var availableSeats = train.FindAvailableSeats(seatsRequestedCount);
+
+
+            if (availableSeats.Count != seatsRequestedCount)
+            {
+                return $"{{\"train_id\": \"{trainId}\", \"booking_reference\": \"\", \"seats\": []}}";
+            }
+
+            var bookingReference = await _bookingReferenceService.GetBookingReference();
+
+            foreach (var availableSeat in availableSeats)
+            {
+                availableSeat.BookingRef = bookingReference;
+                numberOfReservation++;
+            }
+
+            if (numberOfReservation != seatsRequestedCount)
+            {
+                return $"{{\"train_id\": \"{trainId}\", \"booking_reference\": \"\", \"seats\": []}}";
+            }
+
+            await _trainCaching.Save(trainId, train, bookingReference);
+
+            await _trainDataService.Reserve(trainId, bookingReference, availableSeats);
+
+            return
+                $"{{\"train_id\": \"{trainId}\", \"booking_reference\": \"{bookingReference}\", \"seats\": {dumpSeats(availableSeats)}}}";
+
         }
 
         private string dumpSeats(IEnumerable<Seat> seats)

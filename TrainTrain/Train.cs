@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace TrainTrain
@@ -17,13 +18,38 @@ namespace TrainTrain
 
         public int ReservedSeats
         {
-            get { return Seats.Count(s => !string.IsNullOrEmpty(s.BookingRef)); }
+            get { return Seats.Count(s => !String.IsNullOrEmpty(s.BookingRef)); }
         }
         public List<Seat> Seats { get; set; }
 
         public bool HasLessThanThreshold(int i)
         {
             return ReservedSeats < i;
+        }
+
+        public int GetAvailableSeatsForReservation()
+        {
+            return (int)Math.Floor(ThresholdManager.GetReservationMaxPercent() * GetNbSeats());
+        }
+
+        public List<Seat> FindAvailableSeats(int seatsRequestedCount)
+        {
+            var availableSeats = new List<Seat>();
+            var numberUnreservedSeats = 0;
+
+            foreach (var seat in Seats)
+            {
+                if (seat.IsNotReserved())
+                {
+                    numberUnreservedSeats++;
+                    if (numberUnreservedSeats <= seatsRequestedCount)
+                    {
+                        availableSeats.Add(seat);
+                    }
+                }
+            }
+
+            return availableSeats;
         }
     }
 
