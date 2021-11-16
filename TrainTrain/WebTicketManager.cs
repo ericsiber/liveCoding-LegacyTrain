@@ -41,15 +41,26 @@ namespace TrainTrain
             {
                 var numberOfReserv = 0;
                 // find seats to reserve
+                var firstSeatValidated = false;
                 for (int index = 0, i = 0; index < trainInst.Seats.Count; index++)
                 {
                     var each = trainInst.Seats[index];
                     if (each.BookingRef == "")
                     {
-                        i++;
-                        if (i <= seatsRequestedCount)
+                        if (!firstSeatValidated)
                         {
-                            availableSeats.Add(each);
+                            var lastRequiredSeatIndex = index + seatsRequestedCount - 1;
+                            firstSeatValidated = (lastRequiredSeatIndex < trainInst.Seats.Count &&
+                                                  each.CoachName == trainInst.Seats[lastRequiredSeatIndex].CoachName);
+
+                        }
+                        if (firstSeatValidated)
+                        {
+                            i++;
+                            if (i <= seatsRequestedCount)
+                            {
+                                availableSeats.Add(each);
+                            }
                         }
                     }
                 }
