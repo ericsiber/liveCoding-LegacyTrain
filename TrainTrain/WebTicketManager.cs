@@ -26,8 +26,7 @@ namespace TrainTrain
             _trainDataService = trainDataService;
             _bookingReferenceService = bookingReferenceService;
             _trainCaching = new TrainCaching();
-            _trainCaching.Clear();
-    
+            //_trainCaching.Clear();
         }
         public async Task<string> Reserve(string trainId, int seatsRequestedCount)
         {
@@ -81,7 +80,7 @@ namespace TrainTrain
 
                 if (numberOfReserv == seatsRequestedCount)
                 {
-                    await _trainCaching.Save(trainId, trainInst, bookingRef);
+                    //await _trainCaching.Save(trainId, trainInst, bookingRef);
 
                     await _trainDataService.BookSeats(trainId, bookingRef, availableSeats);
                     return
